@@ -1,0 +1,24 @@
+type Quiz {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input CreateQuizInput {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input UpdateQuizInput {
+  id: Int!
+}
+
+type Query {
+  quizzes: [Quiz]!
+  quiz(id: Int!): Quiz
+}
+
+type Mutation {
+  createQuiz(createQuizInput: CreateQuizInput!): Quiz!
+  updateQuiz(updateQuizInput: UpdateQuizInput!): Quiz!
+  removeQuiz(id: Int!): Quiz
+}
