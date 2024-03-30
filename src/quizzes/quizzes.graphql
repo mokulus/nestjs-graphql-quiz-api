@@ -1,24 +1,90 @@
 type Quiz {
-  # Example field (placeholder)
-  exampleField: Int
+  id: ID!
+  name: String!
+  questions: [Question!]!
+}
+
+interface Question {
+  id: ID!
+  prompt: String!
+}
+
+type SingleChoiceQuestion implements Question {
+  id: ID!
+  prompt: String!
+  answers: [String!]!
+  correctAnswer: String!
+}
+
+type MultipleChoiceQuestion implements Question {
+  id: ID!
+  prompt: String!
+  answers: [String!]!
+  correctAnswers: [String!]!
+}
+
+type SortingQuestion implements Question {
+  id: ID!
+  prompt: String!
+  answers: [String!]!
+  correctOrder: [String!]!
+}
+
+type TextQuestion implements Question {
+  id: ID!
+  prompt: String!
+  correctAnswer: String!
+}
+
+input SingleChoiceQuestionInput {
+  prompt: String!
+  answers: [String!]!
+  correctAnswer: String!
+}
+
+input MultipleChoiceQuestionInput {
+  prompt: String!
+  answers: [String!]!
+  correctAnswers: [String!]!
+}
+
+input SortingQuestionInput {
+  prompt: String!
+  answers: [String!]!
+  correctOrder: [String!]!
+}
+
+input TextQuestionInput {
+  id: ID!
+  prompt: String!
+  correctAnswer: String!
+}
+
+input QuestionInput {
+  singleChoiceQuestionInput: SingleChoiceQuestionInput
+  multipleChoiceQuestionInput: MultipleChoiceQuestionInput
+  sortingChoiceQuestionInput: SortingQuestionInput
+  textQuestionInput: TextQuestionInput
 }
 
 input CreateQuizInput {
-  # Example field (placeholder)
-  exampleField: Int
+  name: String!
+  questions: [QuestionInput!]!
 }
 
 input UpdateQuizInput {
-  id: Int!
+  id: ID!
+  name: String
+  questions: [QuestionInput!]
 }
 
 type Query {
-  quizzes: [Quiz]!
-  quiz(id: Int!): Quiz
+  quizzes: [Quiz!]!
+  quiz(id: ID!): Quiz
 }
 
 type Mutation {
   createQuiz(createQuizInput: CreateQuizInput!): Quiz!
   updateQuiz(updateQuizInput: UpdateQuizInput!): Quiz!
-  removeQuiz(id: Int!): Quiz
+  removeQuiz(id: ID!): Quiz
 }
