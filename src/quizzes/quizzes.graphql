@@ -55,7 +55,6 @@ input SortingQuestionInput {
 }
 
 input TextQuestionInput {
-  id: ID!
   prompt: String!
   correctAnswer: String!
 }
