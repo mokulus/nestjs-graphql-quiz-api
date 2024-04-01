@@ -1,21 +1,28 @@
 import { Module } from '@nestjs/common';
 import { QuizzesService } from './quizzes.service';
 import { QuizzesResolver } from './quizzes.resolver';
-import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
+import { QuestionsResolver } from './questions.resolver';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Question } from './entities/question.entity';
+import { Quiz } from './entities/quiz.entity';
+import {
+  MultipleChoiceQuestion,
+  SingleChoiceQuestion,
+  SortingQuestion,
+  TextQuestion,
+} from './entities/question.entity';
 
 @Module({
-  providers: [QuizzesResolver, QuizzesService],
+  providers: [QuizzesResolver, QuestionsResolver, QuizzesService],
   imports: [
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      typePaths: ['./**/*.graphql'],
-      definitions: {
-        path: join(process.cwd(), 'src/quizzes/quizzes.graphql.ts'),
-        outputAs: 'class',
-      },
-    }),
+    TypeOrmModule.forFeature([
+      Quiz,
+      Question,
+      SingleChoiceQuestion,
+      MultipleChoiceQuestion,
+      SortingQuestion,
+      TextQuestion,
+    ]),
   ],
 })
 export class QuizzesModule {}

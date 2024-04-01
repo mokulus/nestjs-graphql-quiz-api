@@ -1,14 +1,13 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { QuizzesService } from './quizzes.service';
-import { CreateQuizInput } from './dto/create-quiz.input';
-import { UpdateQuizInput } from './dto/update-quiz.input';
+import { CreateQuizInputDTO, UpdateQuizInputDTO } from './dto/quiz';
 
 @Resolver('Quiz')
 export class QuizzesResolver {
   constructor(private readonly quizzesService: QuizzesService) {}
 
   @Mutation('createQuiz')
-  create(@Args('createQuizInput') createQuizInput: CreateQuizInput) {
+  create(@Args('createQuizInput') createQuizInput: CreateQuizInputDTO) {
     return this.quizzesService.create(createQuizInput);
   }
 
@@ -23,8 +22,8 @@ export class QuizzesResolver {
   }
 
   @Mutation('updateQuiz')
-  update(@Args('updateQuizInput') updateQuizInput: UpdateQuizInput) {
-    return this.quizzesService.update(updateQuizInput.id, updateQuizInput);
+  update(@Args('updateQuizInput') updateQuizInput: UpdateQuizInputDTO) {
+    return this.quizzesService.update(+updateQuizInput.id, updateQuizInput);
   }
 
   @Mutation('removeQuiz')
