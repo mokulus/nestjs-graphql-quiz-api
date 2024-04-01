@@ -11,9 +11,15 @@ import {
   SortingQuestion,
   TextQuestion,
 } from './entities/question.entity';
+import { QuizInputValidationService } from './quizzes.validation';
 
 @Module({
-  providers: [QuizzesResolver, QuestionsResolver, QuizzesService],
+  providers: [
+    QuizzesResolver,
+    QuestionsResolver,
+    QuizzesService,
+    QuizInputValidationService,
+  ],
   imports: [
     TypeOrmModule.forFeature([
       Quiz,

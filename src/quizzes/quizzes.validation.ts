@@ -1,40 +1,43 @@
-import {
-  ArgumentMetadata,
-  BadRequestException,
-  Injectable,
-  PipeTransform,
-} from '@nestjs/common';
-import { CreateQuizInputDTO } from './dto/quiz';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { CreateQuizInputDTO, UpdateQuizInputDTO } from './dto/quiz';
 import {
   MultipleChoiceQuestionInputDTO,
+  QuestionInputDTO,
   SingleChoiceQuestionInputDTO,
   SortingQuestionInputDTO,
   TextQuestionInputDTO,
 } from './dto/question';
 
 @Injectable()
-export class ValidateCreateQuizInputPipe
-  implements PipeTransform<CreateQuizInputDTO>
-{
-  transform(value: CreateQuizInputDTO, metadata: ArgumentMetadata) {
-    metadata as any;
-    for (const question of value.questions) {
-      if (question.singleChoiceQuestionInput !== null) {
-        validateSingleChoiceQuestion(question.singleChoiceQuestionInput);
-      } else if (question.multipleChoiceQuestionInput !== null) {
-        validateMultipleChoiceQuestion(question.multipleChoiceQuestionInput);
-      } else if (question.sortingChoiceQuestionInput !== null) {
-        validateSortingChoiceQuestion(question.sortingChoiceQuestionInput);
-      } else if (question.textQuestionInput !== null) {
-        validateTextQuestionInput(question.textQuestionInput);
-      } else {
-        throw new BadRequestException(
-          'Validation failed - all question inputs are empty',
-        );
-      }
-    }
+export class QuizInputValidationService {
+  validate(value: CreateQuizInputDTO): CreateQuizInputDTO;
+  validate(value: UpdateQuizInputDTO): UpdateQuizInputDTO;
+  validate(
+    value: CreateQuizInputDTO | UpdateQuizInputDTO,
+  ): CreateQuizInputDTO | UpdateQuizInputDTO {
+    if (value.questions !== null)
+      value.questions = validateQuestions(value.questions);
     return value;
   }
+}
+
+function validateQuestions(questions: QuestionInputDTO[]): QuestionInputDTO[] {
+  for (const question of questions) {
+    if (question.singleChoiceQuestionInput !== null) {
+      validateSingleChoiceQuestion(question.singleChoiceQuestionInput);
+    } else if (question.multipleChoiceQuestionInput !== null) {
+      validateMultipleChoiceQuestion(question.multipleChoiceQuestionInput);
+    } else if (question.sortingChoiceQuestionInput !== null) {
+      validateSortingChoiceQuestion(question.sortingChoiceQuestionInput);
+    } else if (question.textQuestionInput !== null) {
+      validateTextQuestionInput(question.textQuestionInput);
+    } else {
+      throw new BadRequestException(
+        'Validation failed - all question inputs are empty',
+      );
+    }
+  }
+  return questions;
 }
 
 function validateUnique<T>(array: T[]): Set<T> {

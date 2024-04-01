@@ -11,6 +11,7 @@ import {
   TextQuestion,
 } from './entities/question.entity';
 import { SingleChoiceQuestionDTO } from './dto/question';
+import { QuizInputValidationService } from './quizzes.validation';
 
 @Injectable()
 export class QuizzesService {
@@ -27,9 +28,11 @@ export class QuizzesService {
     private sortingQuestionRepository: Repository<SortingQuestion>,
     @InjectRepository(TextQuestion)
     private textQuestionRepository: Repository<TextQuestion>,
+    private readonly createQuizInputValidation: QuizInputValidationService,
   ) {}
 
   async create(createQuizInput: CreateQuizInputDTO) {
+    createQuizInput = this.createQuizInputValidation.validate(createQuizInput);
     const quiz = new Quiz();
     quiz.name = createQuizInput.name;
     quiz.questions = [];

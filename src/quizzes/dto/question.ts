@@ -14,6 +14,7 @@ import {
   ValidateNested,
   IsArray,
   ArrayNotEmpty,
+  Allow,
 } from 'class-validator';
 import { MIN_LENGTH, MAX_LENGTH } from './common';
 
@@ -108,5 +109,6 @@ export class SingleChoiceQuestionDTO
   @Length(MIN_LENGTH, MAX_LENGTH)
   correctAnswer: string;
 
-  static type = 'SingleChoiceQuestion';
+  @Allow()
+  type = 'SingleChoiceQuestion';
 }
