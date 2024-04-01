@@ -2,8 +2,10 @@ services:
   db:
     image: postgres:16
     restart: always
+    ports:
+      - '${DB_PORT}:${DB_PORT}'
     volumes:
       - /var/lib/postgresql/data
     environment:
-      POSTGRES_USER: '$DB_USER'
-      POSTGRES_PASSWORD: '$DB_PASSWORD'
+      POSTGRES_USER: '${DB_USER}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD}'
