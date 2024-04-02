@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateQuizInputDTO, UpdateQuizInputDTO } from './dto/quiz';
 import {
   MultipleChoiceQuestionInputDTO,
+  QuestionInputDTO,
   SingleChoiceQuestionInputDTO,
   SortingQuestionInputDTO,
   TextQuestionInputDTO,
@@ -9,27 +9,25 @@ import {
 import { QuestionInputVisitor } from './question.visitor';
 
 @Injectable()
-export class QuizInputValidationService {
+export class QuestionInputValidationService {
   private readonly questionInputValidator = new QuestionInputValidator();
-
   constructor() {}
-
-  validate(value: CreateQuizInputDTO): CreateQuizInputDTO;
-  validate(value: UpdateQuizInputDTO): UpdateQuizInputDTO;
-  validate(
-    value: CreateQuizInputDTO | UpdateQuizInputDTO,
-  ): CreateQuizInputDTO | UpdateQuizInputDTO {
-    if (value.questions !== null) {
-      for (const question of value.questions) {
-        this.questionInputValidator.visit(question);
-      }
+  validate(questionInput: QuestionInputDTO) {
+    if (
+      Object.values(questionInput).filter((value) => value != null).length !== 1
+    ) {
+      throw new BadRequestException(
+        'Validation failed - specify exactly one question input type',
+      );
     }
-    return value;
+    this.questionInputValidator.visit(questionInput);
   }
 }
 
 class QuestionInputValidator extends QuestionInputVisitor<void> {
-  visitSingleChoiceQuestionInput(value: SingleChoiceQuestionInputDTO) {
+  protected visitSingleChoiceQuestionInput(
+    value: SingleChoiceQuestionInputDTO,
+  ) {
     const { answers, correctAnswer } = value;
     validateUnique(answers);
     if (!answers.includes(correctAnswer)) {
@@ -38,7 +36,9 @@ class QuestionInputValidator extends QuestionInputVisitor<void> {
       );
     }
   }
-  visitMultipleChoiceQuestionInput(value: MultipleChoiceQuestionInputDTO) {
+  protected visitMultipleChoiceQuestionInput(
+    value: MultipleChoiceQuestionInputDTO,
+  ) {
     const { answers, correctAnswers } = value;
     const answersSet = validateUnique(answers);
     validateUnique(correctAnswers);
@@ -50,7 +50,7 @@ class QuestionInputValidator extends QuestionInputVisitor<void> {
       }
     }
   }
-  visitSortingQuestionInput(value: SortingQuestionInputDTO) {
+  protected visitSortingQuestionInput(value: SortingQuestionInputDTO) {
     const { answers, correctOrder } = value;
     const answersSet = validateUnique(answers);
     const correctSet = validateUnique(correctOrder);
@@ -65,7 +65,7 @@ class QuestionInputValidator extends QuestionInputVisitor<void> {
       );
     }
   }
-  visitTextQuestionInput(value: TextQuestionInputDTO) {
+  protected visitTextQuestionInput(value: TextQuestionInputDTO) {
     value as any;
   }
 }

@@ -6,7 +6,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Quiz } from './quiz.entity';
+import { Quiz } from '../../quizzes/entities/quiz.entity';
 
 @Entity()
 export class SingleChoiceQuestion {

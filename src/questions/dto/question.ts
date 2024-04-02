@@ -1,10 +1,13 @@
 import {
+  MultipleChoiceQuestion,
   MultipleChoiceQuestionInput,
   Question,
   QuestionInput,
   SingleChoiceQuestion,
   SingleChoiceQuestionInput,
+  SortingQuestion,
   SortingQuestionInput,
+  TextQuestion,
   TextQuestionInput,
 } from '../../graphql';
 import {
@@ -16,7 +19,7 @@ import {
   ArrayNotEmpty,
   Allow,
 } from 'class-validator';
-import { MIN_LENGTH, MAX_LENGTH } from './common';
+import { MIN_LENGTH, MAX_LENGTH } from '../../constants';
 
 export class QuestionDTO implements Question {
   @IsInt()
@@ -111,4 +114,45 @@ export class SingleChoiceQuestionDTO
 
   @Allow()
   type = 'SingleChoiceQuestion';
+}
+
+export class MultipleChoiceQuestionDTO
+  extends QuestionDTO
+  implements MultipleChoiceQuestion
+{
+  @Length(MIN_LENGTH, MAX_LENGTH, { each: true })
+  @IsArray()
+  @ArrayNotEmpty()
+  answers: string[];
+
+  @Length(MIN_LENGTH, MAX_LENGTH, { each: true })
+  @IsArray()
+  @ArrayNotEmpty()
+  correctAnswers: string[];
+
+  @Allow()
+  type = 'MultipleChoiceQuestion';
+}
+
+export class SortingQuestionDTO extends QuestionDTO implements SortingQuestion {
+  @Length(MIN_LENGTH, MAX_LENGTH, { each: true })
+  @IsArray()
+  @ArrayNotEmpty()
+  answers: string[];
+
+  @Length(MIN_LENGTH, MAX_LENGTH, { each: true })
+  @IsArray()
+  @ArrayNotEmpty()
+  correctOrder: string[];
+
+  @Allow()
+  type = 'SortingQuestion';
+}
+
+export class TextQuestionDTO extends QuestionDTO implements TextQuestion {
+  @Length(MIN_LENGTH, MAX_LENGTH)
+  correctAnswer: string;
+
+  @Allow()
+  type = 'TextQuestion';
 }

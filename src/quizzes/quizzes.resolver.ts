@@ -1,33 +1,23 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { QuizzesService } from './quizzes.service';
-import { CreateQuizInputDTO, UpdateQuizInputDTO } from './dto/quiz';
+import { CreateQuizInputDTO } from './dto/quiz';
+import { QuestionsService } from 'src/questions/questions.service';
 
 @Resolver('Quiz')
 export class QuizzesResolver {
-  constructor(private readonly quizzesService: QuizzesService) {}
+  constructor(
+    private readonly quizzesService: QuizzesService,
+    private readonly questionsService: QuestionsService,
+  ) {}
 
   @Mutation('createQuiz')
-  create(@Args('createQuizInput') createQuizInput: CreateQuizInputDTO) {
-    return this.quizzesService.create(createQuizInput);
+  async create(@Args('createQuizInput') createQuizInput: CreateQuizInputDTO) {
+    const o = await this.quizzesService.create(createQuizInput);
+    return o;
   }
 
   @Query('quizzes')
-  findAll() {
+  quizzes() {
     return this.quizzesService.findAll();
-  }
-
-  @Query('quiz')
-  findOne(@Args('id') id: number) {
-    return this.quizzesService.findOne(id);
-  }
-
-  @Mutation('updateQuiz')
-  update(@Args('updateQuizInput') updateQuizInput: UpdateQuizInputDTO) {
-    return this.quizzesService.update(+updateQuizInput.id, updateQuizInput);
-  }
-
-  @Mutation('removeQuiz')
-  remove(@Args('id') id: number) {
-    return this.quizzesService.remove(id);
   }
 }

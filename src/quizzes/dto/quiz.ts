@@ -6,8 +6,8 @@ import {
   IsOptional,
   IsArray,
 } from 'class-validator';
-import { QuestionDTO, QuestionInputDTO } from './question';
-import { MIN_LENGTH, MAX_LENGTH } from './common';
+import { QuestionDTO, QuestionInputDTO } from '../../questions/dto/question';
+import { MIN_LENGTH, MAX_LENGTH } from '../../constants';
 
 export class QuizDTO implements Quiz {
   @IsInt()
