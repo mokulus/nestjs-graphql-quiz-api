@@ -49,6 +49,7 @@ export class QuizzesService {
       quizDTO.questions = quiz.questions.map((question) => {
         const questionDTO = this.questionConverterService.visit(question);
         questionDTO.prompt = question.prompt;
+        questionDTO.id = question.id.toString();
         return questionDTO;
       });
     }
