@@ -10,9 +10,9 @@ import { QuestionInputVisitor } from './question.visitor';
 
 @Injectable()
 export class QuizInputValidationService {
-  constructor(
-    private readonly questionInputValidator: QuestionInputValidator,
-  ) {}
+  private readonly questionInputValidator = new QuestionInputValidator();
+
+  constructor() {}
 
   validate(value: CreateQuizInputDTO): CreateQuizInputDTO;
   validate(value: UpdateQuizInputDTO): UpdateQuizInputDTO;
