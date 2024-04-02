@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:16
+    build: ./database
     restart: always
     ports:
       - '${DB_PORT}:${DB_PORT}'
@@ -9,3 +9,6 @@ services:
     environment:
       POSTGRES_USER: '${DB_USER}'
       POSTGRES_PASSWORD: '${DB_PASSWORD}'
+      DB_NAME: '${DB_NAME}'
+      DB_USER: '${DB_USER}'
+      DB_PASSWORD: '${DB_PASSWORD}'
