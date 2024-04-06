@@ -65,15 +65,19 @@ export class TextQuestionSubmissionInputDTO
 export class QuestionSubmissionInputDTO implements QuestionSubmissionInput {
   @IsNotEmpty()
   questionID: string;
+
   @IsOptional()
   @ValidateNested()
   singleChoiceQuestionSubmissionInput?: SingleChoiceQuestionSubmissionInputDTO;
+
   @IsOptional()
   @ValidateNested()
   multipleChoiceQuestionSubmissionInput?: MultipleChoiceQuestionSubmissionInputDTO;
+
   @IsOptional()
   @ValidateNested()
   sortingQuestionSubmissionInput?: SortingQuestionSubmissionInputDTO;
+
   @IsOptional()
   @ValidateNested()
   textQuestionSubmissionInput?: TextQuestionSubmissionInputDTO;
@@ -82,6 +86,7 @@ export class QuestionSubmissionInputDTO implements QuestionSubmissionInput {
 export class QuizSubmissionInputDTO implements QuizSubmissionInput {
   @IsNotEmpty()
   quizID: string;
+
   @IsArray()
   @ArrayNotEmpty()
   @ValidateNested()
