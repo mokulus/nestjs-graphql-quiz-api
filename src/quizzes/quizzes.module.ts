@@ -3,11 +3,11 @@ import { QuizzesService } from './quizzes.service';
 import { QuizzesResolver } from './quizzes.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Quiz } from './entities/quiz.entity';
-import { QuizInputValidationService } from './quiz.validation';
 import { QuestionsModule } from 'src/questions/questions.module';
+import { QuizInputValidationPipe } from './quiz.validation.pipe';
 
 @Module({
-  providers: [QuizzesResolver, QuizzesService, QuizInputValidationService],
+  providers: [QuizzesResolver, QuizzesService, QuizInputValidationPipe],
   imports: [TypeOrmModule.forFeature([Quiz]), QuestionsModule],
 })
 export class QuizzesModule {}

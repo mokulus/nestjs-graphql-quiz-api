@@ -5,20 +5,17 @@ import { Repository } from 'typeorm';
 import { Quiz } from './entities/quiz.entity';
 import { QuestionsService } from 'src/questions/questions.service';
 import { QuestionConverterService } from 'src/questions/question.convert';
-import { QuizInputValidationService } from './quiz.validation';
 
 @Injectable()
 export class QuizzesService {
   constructor(
     @InjectRepository(Quiz)
     private quizRepository: Repository<Quiz>,
-    private readonly quizInputValidationService: QuizInputValidationService,
     private readonly questionsService: QuestionsService,
     private readonly questionConverterService: QuestionConverterService,
   ) {}
 
   async create(createQuizInput: CreateQuizInputDTO) {
-    createQuizInput = this.quizInputValidationService.validate(createQuizInput);
     const quiz = new Quiz();
     quiz.name = createQuizInput.name;
     quiz.questions = createQuizInput.questions.map((questionInput) =>
