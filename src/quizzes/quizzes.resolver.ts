@@ -17,8 +17,7 @@ export class QuizzesResolver {
     @Args('createQuizInput', QuizInputValidationPipe)
     createQuizInput: CreateQuizInputDTO,
   ) {
-    const o = await this.quizzesService.create(createQuizInput);
-    return o;
+    return this.quizzesService.create(createQuizInput);
   }
 
   @Mutation('updateQuiz')
@@ -26,8 +25,7 @@ export class QuizzesResolver {
     @Args('updateQuizInput', QuizInputValidationPipe)
     updateQuizInput: UpdateQuizInput,
   ) {
-    const o = await this.quizzesService.update(updateQuizInput);
-    return o;
+    return this.quizzesService.update(updateQuizInput);
   }
 
   @Query('quizzes')
