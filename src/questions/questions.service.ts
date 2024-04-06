@@ -30,50 +30,43 @@ export class QuestionsService {
 }
 
 class QuestionFactory extends QuestionInputVisitor<Question> {
+  private makeQuestion<K extends keyof Question>(
+    input: { prompt: string },
+    ctor: new () => Question[K],
+    key: K,
+  ) {
+    const { prompt, ...rest } = input;
+    const question = new Question();
+    question.prompt = prompt;
+    question[key] = Object.assign(new ctor(), rest);
+    return question;
+  }
+
   visitSingleChoiceQuestionInput(
     input: SingleChoiceQuestionInputDTO,
   ): Question {
-    const { prompt, answers, correctAnswer } = input;
-    const question = new Question();
-    question.prompt = prompt;
-    question.singleChoiceQuestion = Object.assign(new SingleChoiceQuestion(), {
-      answers,
-      correctAnswer,
-    });
-    return question;
+    return this.makeQuestion(
+      input,
+      SingleChoiceQuestion,
+      'singleChoiceQuestion',
+    );
   }
 
   visitMultipleChoiceQuestionInput(
     input: MultipleChoiceQuestionInputDTO,
   ): Question {
-    const { prompt, answers, correctAnswers } = input;
-    const question = new Question();
-    question.prompt = prompt;
-    question.multipleChoiceQuestion = Object.assign(
-      new MultipleChoiceQuestion(),
-      { answers, correctAnswers },
+    return this.makeQuestion(
+      input,
+      MultipleChoiceQuestion,
+      'multipleChoiceQuestion',
     );
-    return question;
   }
 
   visitSortingQuestionInput(input: SortingQuestionInputDTO): Question {
-    const { prompt, answers, correctOrder } = input;
-    const question = new Question();
-    question.prompt = prompt;
-    question.sortingQuestion = Object.assign(new SortingQuestion(), {
-      answers,
-      correctOrder,
-    });
-    return question;
+    return this.makeQuestion(input, SortingQuestion, 'sortingQuestion');
   }
 
   visitTextQuestionInput(input: TextQuestionInputDTO): Question {
-    const { prompt, correctAnswer } = input;
-    const question = new Question();
-    question.prompt = prompt;
-    question.textQuestion = Object.assign(new TextQuestion(), {
-      correctAnswer,
-    });
-    return question;
+    return this.makeQuestion(input, TextQuestion, 'textQuestion');
   }
 }
