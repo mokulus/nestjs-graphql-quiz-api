@@ -21,7 +21,7 @@ export class QuizzesService {
     quiz.questions = createQuizInput.questions.map((questionInput) =>
       this.questionsService.makeEntity(questionInput),
     );
-    return this.quizRepository.save(quiz).then((quiz) => this.convert(quiz));
+    return this.convert(await this.quizRepository.save(quiz));
   }
 
   async update(updateQuizInput: UpdateQuizInputDTO): Promise<QuizDTO | null> {
@@ -36,9 +36,7 @@ export class QuizzesService {
       quiz.questions = questions.map((questionInput) =>
         this.questionsService.makeEntity(questionInput),
       );
-    return await this.quizRepository
-      .save(quiz)
-      .then((quiz) => this.convert(quiz));
+    return this.convert(await this.quizRepository.save(quiz));
   }
 
   async remove(id: number): Promise<QuizDTO | null> {
@@ -51,16 +49,15 @@ export class QuizzesService {
   }
 
   async findAll(): Promise<QuizDTO[]> {
-    return this.quizRepository
-      .find({
-        relations: this.relations(),
-        order: {
-          questions: {
-            id: 'ASC',
-          },
+    const quizzes = await this.quizRepository.find({
+      relations: this.relations(),
+      order: {
+        questions: {
+          id: 'ASC',
         },
-      })
-      .then((quizzes) => quizzes.map((quiz) => this.convert(quiz)));
+      },
+    });
+    return quizzes.map(this.convert);
   }
 
   async findById(id: number): Promise<QuizDTO | null> {
