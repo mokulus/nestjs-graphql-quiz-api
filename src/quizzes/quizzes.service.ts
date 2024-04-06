@@ -38,6 +38,11 @@ export class QuizzesService {
             textQuestion: true,
           },
         },
+        order: {
+          questions: {
+            id: 'ASC',
+          },
+        },
       })
       .then((quizzes) => quizzes.map((quiz) => this.convert(quiz)));
   }
