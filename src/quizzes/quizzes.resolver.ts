@@ -24,4 +24,9 @@ export class QuizzesResolver {
   quizzes() {
     return this.quizzesService.findAll();
   }
+
+  @Query('quiz')
+  quiz(@Args('id') id: string) {
+    return this.quizzesService.findById(+id);
+  }
 }

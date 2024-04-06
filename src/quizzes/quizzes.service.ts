@@ -44,6 +44,22 @@ export class QuizzesService {
       .then((quizzes) => quizzes.map((quiz) => this.convert(quiz)));
   }
 
+  findById(id: number) {
+    return this.quizRepository
+      .findOne({
+        where: { id },
+        relations: {
+          questions: {
+            singleChoiceQuestion: true,
+            multipleChoiceQuestion: true,
+            sortingQuestion: true,
+            textQuestion: true,
+          },
+        },
+      })
+      .then((quiz) => (quiz == null ? quiz : this.convert(quiz)));
+  }
+
   private convert(quiz: Quiz): QuizDTO {
     const { id, name } = quiz;
     const quizDTO = Object.assign(new QuizDTO(), { id, name });
