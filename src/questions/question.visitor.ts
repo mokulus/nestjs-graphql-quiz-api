@@ -6,9 +6,9 @@ import {
   TextQuestionInputDTO,
 } from './dto/question';
 import {
-  MultipleChoiceQuestion,
   Question,
   SingleChoiceQuestion,
+  MultipleChoiceQuestion,
   SortingQuestion,
   TextQuestion,
 } from './entitites/question.entity';

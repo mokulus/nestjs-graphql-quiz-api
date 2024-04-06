@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { QuestionsResolver } from './questions.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
-  MultipleChoiceQuestion,
   Question,
   SingleChoiceQuestion,
+  MultipleChoiceQuestion,
   SortingQuestion,
   TextQuestion,
 } from './entitites/question.entity';

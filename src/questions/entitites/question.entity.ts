@@ -1,3 +1,4 @@
+import { Quiz } from 'src/quizzes/entities/quiz.entity';
 import {
   Column,
   Entity,
@@ -6,77 +7,77 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Quiz } from '../../quizzes/entities/quiz.entity';
 
-@Entity()
+@Entity({ name: 'single_choice_question' })
 export class SingleChoiceQuestion {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ name: 'single_choice_question_id' })
   id: number;
 
-  @Column('simple-array')
+  @Column('text', { name: 'answers', array: true })
   answers: string[];
 
-  @Column()
+  @Column('text', { name: 'correct_answer' })
   correctAnswer: string;
 }
 
-@Entity()
+@Entity({ name: 'multiple_choice_question' })
 export class MultipleChoiceQuestion {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ name: 'multiple_choice_question_id' })
   id: number;
 
-  @Column('simple-array')
+  @Column('text', { name: 'answers', array: true })
   answers: string[];
 
-  @Column('simple-array')
+  @Column('text', { name: 'correct_answers', array: true })
   correctAnswers: string[];
 }
 
-@Entity()
+@Entity({ name: 'sorting_question' })
 export class SortingQuestion {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ name: 'sorting_question_id' })
   id: number;
 
-  @Column('simple-array')
+  @Column('text', { name: 'answers', array: true })
   answers: string[];
 
-  @Column('simple-array')
+  @Column('text', { name: 'correct_order', array: true })
   correctOrder: string[];
 }
 
-@Entity()
+@Entity({ name: 'text_question' })
 export class TextQuestion {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ name: 'text_question_id' })
   id: number;
 
-  @Column()
+  @Column({ name: 'correct_answer' })
   correctAnswer: string;
 }
 
-@Entity()
+@Entity({ name: 'question' })
 export class Question {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ name: 'question_id' })
   id: number;
 
-  @Column()
+  @Column({ name: 'prompt' })
   prompt: string;
 
   @ManyToOne(() => Quiz, (quiz) => quiz.questions)
+  @JoinColumn({ name: 'quiz_id' })
   quiz: Quiz;
 
-  @OneToOne(() => SingleChoiceQuestion, { nullable: true, cascade: true })
-  @JoinColumn()
+  @OneToOne(() => SingleChoiceQuestion, { cascade: true })
+  @JoinColumn({ name: 'single_choice_question_id' })
   singleChoiceQuestion: SingleChoiceQuestion;
 
-  @OneToOne(() => MultipleChoiceQuestion, { nullable: true, cascade: true })
-  @JoinColumn()
+  @OneToOne(() => MultipleChoiceQuestion, { cascade: true })
+  @JoinColumn({ name: 'multiple_choice_question_id' })
   multipleChoiceQuestion: MultipleChoiceQuestion;
 
-  @OneToOne(() => SortingQuestion, { nullable: true, cascade: true })
-  @JoinColumn()
+  @OneToOne(() => SortingQuestion, { cascade: true })
+  @JoinColumn({ name: 'sorting_question_id' })
   sortingQuestion: SortingQuestion;
 
-  @OneToOne(() => TextQuestion, { nullable: true, cascade: true })
-  @JoinColumn()
+  @OneToOne(() => TextQuestion, { cascade: true })
+  @JoinColumn({ name: 'text_question_id' })
   textQuestion: TextQuestion;
 }

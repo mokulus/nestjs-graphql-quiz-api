@@ -5,10 +5,13 @@ services:
     ports:
       - '${DB_PORT}:${DB_PORT}'
     volumes:
-      - /var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: '${DB_USER}'
       POSTGRES_PASSWORD: '${DB_PASSWORD}'
       DB_NAME: '${DB_NAME}'
       DB_USER: '${DB_USER}'
       DB_PASSWORD: '${DB_PASSWORD}'
+
+volumes:
+  postgres-data:

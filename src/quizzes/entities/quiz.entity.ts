@@ -1,12 +1,12 @@
+import { Question } from 'src/questions/entitites/question.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Question } from '../../questions/entitites/question.entity';
 
-@Entity()
+@Entity({ name: 'quiz' })
 export class Quiz {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ name: 'quiz_id' })
   id: number;
 
-  @Column()
+  @Column({ name: 'name' })
   name: string;
 
   @OneToMany(() => Question, (question) => question.quiz, { cascade: true })
