@@ -11,7 +11,6 @@ import { QuestionInputVisitor } from './question.visitor';
 @Injectable()
 export class QuestionInputValidationService {
   private readonly questionInputValidator = new QuestionInputValidator();
-  constructor() {}
   validate(questionInput: QuestionInputDTO) {
     if (
       Object.values(questionInput).filter((value) => value != null).length !== 1

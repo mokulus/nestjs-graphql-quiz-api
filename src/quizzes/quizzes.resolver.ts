@@ -1,9 +1,8 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { QuizzesService } from './quizzes.service';
-import { CreateQuizInputDTO } from './dto/quiz';
+import { CreateQuizInputDTO, UpdateQuizInputDTO } from './dto/quiz';
 import { QuestionsService } from 'src/questions/questions.service';
 import { QuizInputValidationPipe } from './quiz.validation.pipe';
-import { UpdateQuizInput } from 'src/graphql';
 
 @Resolver('Quiz')
 export class QuizzesResolver {
@@ -23,7 +22,7 @@ export class QuizzesResolver {
   @Mutation('updateQuiz')
   async update(
     @Args('updateQuizInput', QuizInputValidationPipe)
-    updateQuizInput: UpdateQuizInput,
+    updateQuizInput: UpdateQuizInputDTO,
   ) {
     return this.quizzesService.update(updateQuizInput);
   }

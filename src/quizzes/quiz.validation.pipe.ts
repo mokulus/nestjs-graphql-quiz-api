@@ -12,8 +12,14 @@ export class QuizInputValidationPipe
     private readonly questionInputValidatorService: QuestionInputValidationService,
   ) {}
 
-  transform(value: UpdateQuizInputDTO, metadata: ArgumentMetadata);
-  transform(value: CreateQuizInputDTO, metadata: ArgumentMetadata);
+  transform(
+    value: UpdateQuizInputDTO,
+    metadata: ArgumentMetadata,
+  ): UpdateQuizInputDTO;
+  transform(
+    value: CreateQuizInputDTO,
+    metadata: ArgumentMetadata,
+  ): CreateQuizInputDTO;
   transform(
     value: UpdateQuizInputDTO | CreateQuizInputDTO,
     metadata: ArgumentMetadata,

@@ -159,7 +159,7 @@ class ScorerVisitor extends QuestionSubmissionVisitor<QuestionScoreDTO> {
     textQuestionSubmissionInputDTO: TextQuestionSubmissionInputDTO,
     textQuestionDTO: TextQuestionDTO,
   ): QuestionScoreDTO {
-    const normalize: (string) => string = (s) =>
+    const normalize: (text: string) => string = (s) =>
       s.normalize().toLowerCase().replace(/\p{P}/gu, '');
     const maximum = 1;
     const obtained =

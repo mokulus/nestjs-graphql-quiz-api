@@ -85,5 +85,5 @@ export class QuizSubmissionInputDTO implements QuizSubmissionInput {
   @IsArray()
   @ArrayNotEmpty()
   @ValidateNested()
-  submissions: QuestionSubmissionInput[];
+  submissions: QuestionSubmissionInputDTO[];
 }
