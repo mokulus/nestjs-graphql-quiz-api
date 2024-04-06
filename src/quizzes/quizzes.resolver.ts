@@ -28,6 +28,11 @@ export class QuizzesResolver {
     return this.quizzesService.update(updateQuizInput);
   }
 
+  @Mutation('removeQuiz')
+  async remove(@Args('id') id: string) {
+    return this.quizzesService.remove(+id);
+  }
+
   @Query('quizzes')
   quizzes() {
     return this.quizzesService.findAll();

@@ -41,6 +41,15 @@ export class QuizzesService {
       .then((quiz) => this.convert(quiz));
   }
 
+  async remove(id: number) {
+    const quiz = await this.quizRepository.findOne({
+      where: { id: +id },
+      relations: this.relations(),
+    });
+    if (quiz == null) return null;
+    return this.convert(await this.quizRepository.remove(quiz));
+  }
+
   async findAll() {
     return this.quizRepository
       .find({
