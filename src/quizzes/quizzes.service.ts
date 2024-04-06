@@ -15,7 +15,7 @@ export class QuizzesService {
     private readonly questionConverterService: QuestionConverterService,
   ) {}
 
-  async create(createQuizInput: CreateQuizInputDTO) {
+  async create(createQuizInput: CreateQuizInputDTO): Promise<QuizDTO> {
     const quiz = new Quiz();
     quiz.name = createQuizInput.name;
     quiz.questions = createQuizInput.questions.map((questionInput) =>
@@ -24,7 +24,7 @@ export class QuizzesService {
     return this.quizRepository.save(quiz).then((quiz) => this.convert(quiz));
   }
 
-  async update(updateQuizInput: UpdateQuizInputDTO) {
+  async update(updateQuizInput: UpdateQuizInputDTO): Promise<QuizDTO | null> {
     const { id, name, questions } = updateQuizInput;
     const quiz = await this.quizRepository.findOne({
       where: { id: +id },
@@ -41,7 +41,7 @@ export class QuizzesService {
       .then((quiz) => this.convert(quiz));
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<QuizDTO | null> {
     const quiz = await this.quizRepository.findOne({
       where: { id: +id },
       relations: this.relations(),
@@ -50,7 +50,7 @@ export class QuizzesService {
     return this.convert(await this.quizRepository.remove(quiz));
   }
 
-  async findAll() {
+  async findAll(): Promise<QuizDTO[]> {
     return this.quizRepository
       .find({
         relations: this.relations(),
@@ -63,13 +63,12 @@ export class QuizzesService {
       .then((quizzes) => quizzes.map((quiz) => this.convert(quiz)));
   }
 
-  findById(id: number) {
-    return this.quizRepository
-      .findOne({
-        where: { id },
-        relations: this.relations(),
-      })
-      .then((quiz) => (quiz == null ? quiz : this.convert(quiz)));
+  async findById(id: number): Promise<QuizDTO | null> {
+    const quiz = await this.quizRepository.findOne({
+      where: { id },
+      relations: this.relations(),
+    });
+    return quiz == null ? null : this.convert(quiz);
   }
 
   private convert(quiz: Quiz): QuizDTO {
