@@ -32,7 +32,7 @@ class QuestionInputValidator extends QuestionInputVisitor<void> {
     validateUnique(answers);
     if (!answers.includes(correctAnswer)) {
       throw new BadRequestException(
-        'Validation failed - correct answer missing in asnwers',
+        'Validation failed - correct answer missing in answers',
       );
     }
   }
