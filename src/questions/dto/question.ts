@@ -93,7 +93,7 @@ export class QuestionInputDTO implements QuestionInput {
 
   @IsOptional()
   @ValidateNested()
-  sortingChoiceQuestionInput?: SortingQuestionInputDTO;
+  sortingQuestionInput?: SortingQuestionInputDTO;
 
   @IsOptional()
   @ValidateNested()

@@ -39,10 +39,8 @@ export abstract class QuestionInputVisitor<R> {
       return this.visitMultipleChoiceQuestionInput(
         questionInput.multipleChoiceQuestionInput,
       );
-    } else if (questionInput.sortingChoiceQuestionInput != null) {
-      return this.visitSortingQuestionInput(
-        questionInput.sortingChoiceQuestionInput,
-      );
+    } else if (questionInput.sortingQuestionInput != null) {
+      return this.visitSortingQuestionInput(questionInput.sortingQuestionInput);
     } else if (questionInput.textQuestionInput != null) {
       return this.visitTextQuestionInput(questionInput.textQuestionInput);
     } else {

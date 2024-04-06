@@ -62,7 +62,7 @@ input TextQuestionInput {
 input QuestionInput {
   singleChoiceQuestionInput: SingleChoiceQuestionInput
   multipleChoiceQuestionInput: MultipleChoiceQuestionInput
-  sortingChoiceQuestionInput: SortingQuestionInput
+  sortingQuestionInput: SortingQuestionInput
   textQuestionInput: TextQuestionInput
 }
 
