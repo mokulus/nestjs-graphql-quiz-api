@@ -113,8 +113,9 @@ class ScoreValidator extends QuestionSubmissionVisitor<void> {
     textQuestionSubmissionInputDTO: TextQuestionSubmissionInputDTO,
     textQuestionDTO: TextQuestionDTO,
   ): void {
-    textQuestionSubmissionInputDTO as any;
-    textQuestionDTO as any;
+    // No additional validation for text question
+    textQuestionSubmissionInputDTO;
+    textQuestionDTO;
   }
 }
 
