@@ -15,18 +15,12 @@ import {
 } from './dto/question';
 import { QuestionInputVisitor } from './question.visitor';
 import { QuestionInputValidationService } from './question.validation';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { QuestionConverterService } from './question.convert';
 
 @Injectable()
 export class QuestionsService {
   private readonly questionFactory = new QuestionFactory();
   constructor(
-    @InjectRepository(Question)
-    private readonly questionRepository: Repository<Question>,
     private readonly questionInputValidationService: QuestionInputValidationService,
-    private readonly questionConverterService: QuestionConverterService,
   ) {}
 
   makeEntity(questionInput: QuestionInputDTO): Question {
