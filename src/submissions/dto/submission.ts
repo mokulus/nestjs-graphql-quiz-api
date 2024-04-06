@@ -6,7 +6,7 @@ import {
   Length,
   ValidateNested,
 } from 'class-validator';
-import { MIN_LENGTH, MAX_LENGTH } from 'src/constants';
+import { MIN_LENGTH, MAX_LENGTH } from '../..//constants';
 import {
   MultipleChoiceQuestionSubmissionInput,
   QuestionScore,
@@ -16,7 +16,7 @@ import {
   SingleChoiceQuestionSubmissionInput,
   SortingQuestionSubmissionInput,
   TextQuestionSubmissionInput,
-} from 'src/graphql';
+} from '../../graphql';
 
 export class QuestionScoreDTO implements QuestionScore {
   questionID: string;

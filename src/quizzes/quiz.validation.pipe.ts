@@ -1,5 +1,5 @@
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
-import { QuestionInputValidationService } from 'src/questions/question.validation';
+import { QuestionInputValidationService } from '../questions/question.validation';
 import { CreateQuizInputDTO, UpdateQuizInputDTO } from './dto/quiz';
 
 @Injectable()

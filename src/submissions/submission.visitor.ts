@@ -4,7 +4,7 @@ import {
   SingleChoiceQuestionDTO,
   SortingQuestionDTO,
   TextQuestionDTO,
-} from 'src/questions/dto/question';
+} from '../questions/dto/question';
 import {
   MultipleChoiceQuestionSubmissionInputDTO,
   QuestionSubmissionInputDTO,

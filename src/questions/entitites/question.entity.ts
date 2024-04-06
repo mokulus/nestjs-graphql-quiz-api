@@ -1,4 +1,4 @@
-import { Quiz } from 'src/quizzes/entities/quiz.entity';
+import { Quiz } from '../../quizzes/entities/quiz.entity';
 import {
   Column,
   Entity,

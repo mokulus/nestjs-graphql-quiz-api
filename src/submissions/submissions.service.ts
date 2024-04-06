@@ -9,14 +9,14 @@ import {
   SortingQuestionSubmissionInputDTO,
   TextQuestionSubmissionInputDTO,
 } from './dto/submission';
-import { QuizzesService } from 'src/quizzes/quizzes.service';
+import { QuizzesService } from '../quizzes/quizzes.service';
 import {
   MultipleChoiceQuestionDTO,
   QuestionDTO,
   SingleChoiceQuestionDTO,
   SortingQuestionDTO,
   TextQuestionDTO,
-} from 'src/questions/dto/question';
+} from '../questions/dto/question';
 import { QuestionSubmissionVisitor } from './submission.visitor';
 
 @Injectable()
