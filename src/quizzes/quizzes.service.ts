@@ -57,7 +57,7 @@ export class QuizzesService {
         },
       },
     });
-    return quizzes.map(this.convert);
+    return quizzes.map(this.convert.bind(this));
   }
 
   async findById(id: number): Promise<QuizDTO | null> {
