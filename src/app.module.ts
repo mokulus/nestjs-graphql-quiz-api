@@ -7,6 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
+import { SubmissionsModule } from './submissions/submissions.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { join } from 'path';
       },
     }),
     QuizzesModule,
+    SubmissionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

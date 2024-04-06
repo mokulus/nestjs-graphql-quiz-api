@@ -9,5 +9,6 @@ import { QuizInputValidationPipe } from './quiz.validation.pipe';
 @Module({
   providers: [QuizzesResolver, QuizzesService, QuizInputValidationPipe],
   imports: [TypeOrmModule.forFeature([Quiz]), QuestionsModule],
+  exports: [QuizzesService],
 })
 export class QuizzesModule {}

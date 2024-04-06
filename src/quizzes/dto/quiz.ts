@@ -1,16 +1,16 @@
 import { Quiz, UpdateQuizInput, CreateQuizInput } from '../../graphql';
 import {
-  IsInt,
   Length,
   ValidateNested,
   IsOptional,
   IsArray,
+  IsNotEmpty,
 } from 'class-validator';
 import { QuestionDTO, QuestionInputDTO } from '../../questions/dto/question';
 import { MIN_LENGTH, MAX_LENGTH } from '../../constants';
 
 export class QuizDTO implements Quiz {
-  @IsInt()
+  @IsNotEmpty()
   id: string;
   @Length(MIN_LENGTH, MAX_LENGTH)
   name: string;
@@ -26,7 +26,7 @@ export class CreateQuizInputDTO implements CreateQuizInput {
   questions: QuestionInputDTO[];
 }
 export class UpdateQuizInputDTO implements UpdateQuizInput {
-  @IsInt()
+  @IsNotEmpty()
   id: string;
 
   @Length(MIN_LENGTH, MAX_LENGTH)

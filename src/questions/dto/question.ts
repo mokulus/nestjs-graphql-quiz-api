@@ -11,18 +11,18 @@ import {
   TextQuestionInput,
 } from '../../graphql';
 import {
-  IsInt,
   Length,
   IsOptional,
   ValidateNested,
   IsArray,
   ArrayNotEmpty,
   Allow,
+  IsNotEmpty,
 } from 'class-validator';
 import { MIN_LENGTH, MAX_LENGTH } from '../../constants';
 
 export class QuestionDTO implements Question {
-  @IsInt()
+  @IsNotEmpty()
   id: string;
 
   @Length(MIN_LENGTH, MAX_LENGTH)

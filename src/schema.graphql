@@ -77,9 +77,51 @@ input UpdateQuizInput {
   questions: [QuestionInput!]
 }
 
+type QuestionScore {
+  questionID: ID!
+  obtained: Int!
+  maximum: Int!
+}
+
+type QuizScore {
+  totalObtained: Int!
+  totalMaximum: Int!
+  scores: [QuestionScore!]!
+}
+
+input QuestionSubmissionInput {
+  questionID: ID!
+  singleChoiceQuestionSubmissionInput: SingleChoiceQuestionSubmissionInput
+  multipleChoiceQuestionSubmissionInput: MultipleChoiceQuestionSubmissionInput
+  sortingQuestionSubmissionInput: SortingQuestionSubmissionInput
+  textQuestionSubmissionInput: TextQuestionSubmissionInput
+}
+
+input SingleChoiceQuestionSubmissionInput {
+  answer: String!
+}
+
+input MultipleChoiceQuestionSubmissionInput {
+  answers: [String!]!
+}
+
+input SortingQuestionSubmissionInput {
+  answers: [String!]!
+}
+
+input TextQuestionSubmissionInput {
+  answer: String!
+}
+
+input QuizSubmissionInput {
+  quizID: ID!
+  submissions: [QuestionSubmissionInput!]!
+}
+
 type Query {
   quizzes: [Quiz!]!
   quiz(id: ID!): Quiz
+  scoreQuizSubmission(quizSubmissionInput: QuizSubmissionInput!): QuizScore
 }
 
 type Mutation {
