@@ -12,8 +12,10 @@ import { MIN_LENGTH, MAX_LENGTH } from '../../constants';
 export class QuizDTO implements Quiz {
   @IsNotEmpty()
   id: string;
+
   @Length(MIN_LENGTH, MAX_LENGTH)
   name: string;
+
   @ValidateNested()
   questions: QuestionDTO[];
 }
