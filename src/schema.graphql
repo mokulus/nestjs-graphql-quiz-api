@@ -84,6 +84,6 @@ type Query {
 
 type Mutation {
   createQuiz(createQuizInput: CreateQuizInput!): Quiz!
-  updateQuiz(updateQuizInput: UpdateQuizInput!): Quiz!
+  updateQuiz(updateQuizInput: UpdateQuizInput!): Quiz
   removeQuiz(id: ID!): Quiz
 }

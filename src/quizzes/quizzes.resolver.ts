@@ -3,6 +3,7 @@ import { QuizzesService } from './quizzes.service';
 import { CreateQuizInputDTO } from './dto/quiz';
 import { QuestionsService } from 'src/questions/questions.service';
 import { QuizInputValidationPipe } from './quiz.validation.pipe';
+import { UpdateQuizInput } from 'src/graphql';
 
 @Resolver('Quiz')
 export class QuizzesResolver {
@@ -17,6 +18,15 @@ export class QuizzesResolver {
     createQuizInput: CreateQuizInputDTO,
   ) {
     const o = await this.quizzesService.create(createQuizInput);
+    return o;
+  }
+
+  @Mutation('updateQuiz')
+  async update(
+    @Args('updateQuizInput', QuizInputValidationPipe)
+    updateQuizInput: UpdateQuizInput,
+  ) {
+    const o = await this.quizzesService.update(updateQuizInput);
     return o;
   }
 

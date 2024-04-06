@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateQuizInputDTO, QuizDTO } from './dto/quiz';
+import { CreateQuizInputDTO, QuizDTO, UpdateQuizInputDTO } from './dto/quiz';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Quiz } from './entities/quiz.entity';
@@ -24,17 +24,27 @@ export class QuizzesService {
     return this.quizRepository.save(quiz).then((quiz) => this.convert(quiz));
   }
 
+  async update(updateQuizInput: UpdateQuizInputDTO) {
+    const { id, name, questions } = updateQuizInput;
+    const quiz = await this.quizRepository.findOne({
+      where: { id: +id },
+      relations: this.relations(),
+    });
+    if (quiz == null) return null;
+    if (name != null) quiz.name = name;
+    if (questions != null)
+      quiz.questions = questions.map((questionInput) =>
+        this.questionsService.makeEntity(questionInput),
+      );
+    return await this.quizRepository
+      .save(quiz)
+      .then((quiz) => this.convert(quiz));
+  }
+
   async findAll() {
     return this.quizRepository
       .find({
-        relations: {
-          questions: {
-            singleChoiceQuestion: true,
-            multipleChoiceQuestion: true,
-            sortingQuestion: true,
-            textQuestion: true,
-          },
-        },
+        relations: this.relations(),
         order: {
           questions: {
             id: 'ASC',
@@ -48,14 +58,7 @@ export class QuizzesService {
     return this.quizRepository
       .findOne({
         where: { id },
-        relations: {
-          questions: {
-            singleChoiceQuestion: true,
-            multipleChoiceQuestion: true,
-            sortingQuestion: true,
-            textQuestion: true,
-          },
-        },
+        relations: this.relations(),
       })
       .then((quiz) => (quiz == null ? quiz : this.convert(quiz)));
   }
@@ -72,5 +75,16 @@ export class QuizzesService {
       });
     }
     return quizDTO;
+  }
+
+  private relations() {
+    return {
+      questions: {
+        singleChoiceQuestion: true,
+        multipleChoiceQuestion: true,
+        sortingQuestion: true,
+        textQuestion: true,
+      },
+    };
   }
 }
