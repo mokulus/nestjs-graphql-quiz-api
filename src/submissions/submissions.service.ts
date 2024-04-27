@@ -163,7 +163,9 @@ class ScorerVisitor extends QuestionSubmissionVisitor<QuestionScoreDTO> {
     const maximum = 1;
     const obtained =
       normalize(textQuestionSubmissionInputDTO.answer) ===
-      normalize(textQuestionDTO.correctAnswer);
+      normalize(textQuestionDTO.correctAnswer)
+        ? 1
+        : 0;
     return Object.assign(new QuestionScoreDTO(), { maximum, obtained });
   }
 }
