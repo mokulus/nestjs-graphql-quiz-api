@@ -12,10 +12,20 @@ import {
   MultipleChoiceQuestion,
   SortingQuestion,
   TextQuestion,
+  Question,
 } from './entitites/question.entity';
 
 @Injectable()
-export class QuestionConverterService extends QuestionEntityVisitor<QuestionDTO> {
+export class QuestionConverterService {
+  private readonly questionEntityConverterVisitor =
+    new QuestionEntityConverterVisitor();
+
+  convert(questionEntity: Question): QuestionDTO {
+    return this.questionEntityConverterVisitor.visit(questionEntity);
+  }
+}
+
+class QuestionEntityConverterVisitor extends QuestionEntityVisitor<QuestionDTO> {
   visitSingleChoiceQuestionEntity(
     singleChoiceQuestion: SingleChoiceQuestion,
   ): QuestionDTO {

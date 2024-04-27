@@ -73,7 +73,7 @@ export class QuizzesService {
     const quizDTO = Object.assign(new QuizDTO(), { id, name });
     if (quiz.questions != null) {
       quizDTO.questions = quiz.questions.map((question) => {
-        const questionDTO = this.questionConverterService.visit(question);
+        const questionDTO = this.questionConverterService.convert(question);
         questionDTO.prompt = question.prompt;
         questionDTO.id = question.id.toString();
         return questionDTO;
