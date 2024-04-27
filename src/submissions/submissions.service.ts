@@ -110,12 +110,10 @@ class ScoreValidator extends QuestionSubmissionVisitor<void> {
     }
   }
   protected visitText(
-    textQuestionSubmissionInputDTO: TextQuestionSubmissionInputDTO,
-    textQuestionDTO: TextQuestionDTO,
+    _textQuestionSubmissionInputDTO: TextQuestionSubmissionInputDTO,
+    _textQuestionDTO: TextQuestionDTO,
   ): void {
     // No additional validation for text question
-    textQuestionSubmissionInputDTO;
-    textQuestionDTO;
   }
 }
 

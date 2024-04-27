@@ -22,9 +22,8 @@ export class QuizInputValidationPipe
   ): CreateQuizInputDTO;
   transform(
     value: UpdateQuizInputDTO | CreateQuizInputDTO,
-    metadata: ArgumentMetadata,
+    _metadata: ArgumentMetadata,
   ) {
-    metadata;
     if (value.questions != null) {
       for (const question of value.questions) {
         this.questionInputValidatorService.validate(question);

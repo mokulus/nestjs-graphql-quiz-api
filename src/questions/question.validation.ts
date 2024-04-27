@@ -64,9 +64,8 @@ class QuestionInputValidator extends QuestionInputVisitor<void> {
       );
     }
   }
-  protected visitTextQuestionInput(value: TextQuestionInputDTO) {
+  protected visitTextQuestionInput(_value: TextQuestionInputDTO) {
     // No additional validation for text question
-    value;
   }
 }
 
