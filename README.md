@@ -1,73 +1,314 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Quiz API by Mateusz Okulus
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Running
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Copy `.env.example` to `.env`
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
+```shell
+cp .env.example .env
 ```
 
-## Running the app
+Start the database
+```shell
+docker compose up --build --detach
+```
+Database will be initialized with the schema contained in database folder.
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+If you want to reset the database
+```shell
+docker compose down
+docker volume rm quiz-api_postgres-data
+docker compose up --build --detach
 ```
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```shell
+# install packages
+npm install
+# run tests
+npm run test
+# start dev server
+npm run start:dev
 ```
 
-## Support
+You can now go to http://localhost:3000/graphql to visit GraphQL playground.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# GraphQL queries and mutations
 
-## Stay in touch
+## Create a quiz
+```graphql
+mutation {
+  createQuiz(
+    createQuizInput: {
+      name: "My awesome quiz"
+      questions: [
+        {
+          singleChoiceQuestionInput: {
+            prompt: "What is the capital of France?"
+            answers: ["London", "Paris", "Berlin", "Madrid"]
+            correctAnswer: "Paris"
+          }
+        }
+        {
+          multipleChoiceQuestionInput: {
+            prompt: "Which countries are in Europe?"
+            answers: ["Monaco", "Morocco", "Poland", "Algeria"]
+            correctAnswers: ["Poland", "Monaco"]
+          }
+        }
+        {
+          sortingQuestionInput: {
+            prompt: "Sort the letters"
+            answers: ["B", "C", "A"]
+            correctOrder: ["A", "B", "C"]
+          }
+        }
+        {
+          textQuestionInput: {
+            prompt: "What is the famous phrase from Star Wars? "
+            correctAnswer: "May the force be with you!"
+          }
+        }
+      ]
+    }
+  ) {
+    id
+    name
+    questions {
+      id
+      prompt
+      ... on SingleChoiceQuestion {
+        answers
+        correctAnswer
+      }
+      ... on MultipleChoiceQuestion {
+        answers
+        correctAnswers
+      }
+      ... on SortingQuestion {
+        answers
+        correctOrder
+      }
+      ... on TextQuestion {
+        correctAnswer
+      }
+    }
+  }
+}
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Fetch all quizzes
+```graphql
+query {
+  quizzes {
+    id
+    name
+    questions {
+      id
+      prompt
+      ... on SingleChoiceQuestion {
+        answers
+        correctAnswer
+      }
+      ... on MultipleChoiceQuestion {
+        answers
+        correctAnswers
+      }
+      ... on SortingQuestion {
+        answers
+        correctOrder
+      }
+      ... on TextQuestion {
+        correctAnswer
+      }
+    }
+  }
+}
+```
 
-## License
+## Fetch a single quiz
+```graphql
+query {
+  quiz(id: 1) {
+    id  
+    name
+    questions {
+      prompt
+      ... on SingleChoiceQuestion {
+        answers
+        correctAnswer
+      }
+      ... on MultipleChoiceQuestion {
+        answers
+        correctAnswers
+      }
+      ... on SortingQuestion {
+        answers
+        correctOrder
+      }
+      ... on TextQuestion {
+        correctAnswer
+      }
+    }
+  }
+}
+```
 
-Nest is [MIT licensed](LICENSE).
+## Score a quiz
+```graphql
+query {
+  scoreQuizSubmission(
+    quizSubmissionInput: {
+      quizID: "1"
+      submissions: [
+        {
+          questionID: 1
+          singleChoiceQuestionSubmissionInput: { answer: "Paris" }
+        }
+        {
+          questionID: 2
+          multipleChoiceQuestionSubmissionInput: {
+            answers: ["Monaco", "Poland"]
+          }
+        }
+        {
+          questionID: 3
+          sortingQuestionSubmissionInput: { answers: ["A", "B", "C"] }
+        }
+        {
+          questionID: 4
+          textQuestionSubmissionInput: { answer: "may the force be with you" }
+        }
+      ]
+    }
+  ) {
+    totalObtained
+    totalMaximum
+    scores {
+      questionID
+      obtained
+      maximum
+    }
+  }
+}
+```
+
+## Update a quiz
+
+### Updating just name
+```graphql
+mutation {
+  updateQuiz(updateQuizInput: { id: 1, name: "New name for the quiz" }) {
+    id
+    name
+    questions {
+      id
+      prompt
+      ... on SingleChoiceQuestion {
+        answers
+        correctAnswer
+      }
+      ... on MultipleChoiceQuestion {
+        answers
+        correctAnswers
+      }
+      ... on SortingQuestion {
+        answers
+        correctOrder
+      }
+      ... on TextQuestion {
+        correctAnswer
+      }
+    }
+  }
+}
+
+```
+
+### Updating just questions
+```graphql
+mutation {
+  updateQuiz(
+    updateQuizInput: {
+      id: 1
+      questions: [
+        {
+          singleChoiceQuestionInput: {
+            prompt: "Is this the only question?"
+            answers: ["Yes", "No"]
+            correctAnswer: "Yes"
+          }
+        }
+      ]
+    }
+  ) {
+    id
+    name
+    questions {
+      id
+      prompt
+
+      ... on SingleChoiceQuestion {
+        answers
+        correctAnswer
+      }
+      ... on MultipleChoiceQuestion {
+        answers
+        correctAnswers
+      }
+      ... on SortingQuestion {
+        answers
+        correctOrder
+      }
+      ... on TextQuestion {
+        correctAnswer
+      }
+    }
+  }
+}
+```
+
+
+## Remove a quiz
+```graphql
+mutation {
+  removeQuiz(id: 1) {
+    id
+    name
+    questions {
+      id
+      prompt
+      ... on SingleChoiceQuestion {
+        answers
+        correctAnswer
+      }
+      ... on MultipleChoiceQuestion {
+        answers
+        correctAnswers
+      }
+      ... on SortingQuestion {
+        answers
+        correctOrder
+      }
+      ... on TextQuestion {
+        correctAnswer
+      }
+    }
+  }
+}
+```
+
+## Further work
+
+- More efficient SQL queries.
+
+    Ideally SQL queries should only request what the GraphQL query requested.
+    Field for `SELECT` should be dynamically generated, same for `JOIN`s.
+    For example, when the question prompt is not specified in GraphQL query,
+    it shouldn't be requested in SQL query as well.
+    Right now there is only basic handling of this in `findAll` and `findById`,
+    which avoids the `JOIN`s when questions are not requested.
+    At the same time there should only be one round trip to the database,
+    so things like `@ResolveField` don't seem appropriate.
+
+    I couldn't find a good, established way of doing it with Nest.js.
+    It seems most people parse the GraphQL query and roll their own solution.

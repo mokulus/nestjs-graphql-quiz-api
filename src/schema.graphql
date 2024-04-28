@@ -1,0 +1,131 @@
+type Quiz {
+  id: ID!
+  name: String!
+  questions: [Question!]!
+}
+
+interface Question {
+  id: ID!
+  prompt: String!
+}
+
+type SingleChoiceQuestion implements Question {
+  id: ID!
+  prompt: String!
+  answers: [String!]!
+  correctAnswer: String!
+}
+
+type MultipleChoiceQuestion implements Question {
+  id: ID!
+  prompt: String!
+  answers: [String!]!
+  correctAnswers: [String!]!
+}
+
+type SortingQuestion implements Question {
+  id: ID!
+  prompt: String!
+  answers: [String!]!
+  correctOrder: [String!]!
+}
+
+type TextQuestion implements Question {
+  id: ID!
+  prompt: String!
+  correctAnswer: String!
+}
+
+input SingleChoiceQuestionInput {
+  prompt: String!
+  answers: [String!]!
+  correctAnswer: String!
+}
+
+input MultipleChoiceQuestionInput {
+  prompt: String!
+  answers: [String!]!
+  correctAnswers: [String!]!
+}
+
+input SortingQuestionInput {
+  prompt: String!
+  answers: [String!]!
+  correctOrder: [String!]!
+}
+
+input TextQuestionInput {
+  prompt: String!
+  correctAnswer: String!
+}
+
+input QuestionInput {
+  singleChoiceQuestionInput: SingleChoiceQuestionInput
+  multipleChoiceQuestionInput: MultipleChoiceQuestionInput
+  sortingQuestionInput: SortingQuestionInput
+  textQuestionInput: TextQuestionInput
+}
+
+input CreateQuizInput {
+  name: String!
+  questions: [QuestionInput!]!
+}
+
+input UpdateQuizInput {
+  id: ID!
+  name: String
+  questions: [QuestionInput!]
+}
+
+type QuestionScore {
+  questionID: ID!
+  obtained: Int!
+  maximum: Int!
+}
+
+type QuizScore {
+  totalObtained: Int!
+  totalMaximum: Int!
+  scores: [QuestionScore!]!
+}
+
+input QuestionSubmissionInput {
+  questionID: ID!
+  singleChoiceQuestionSubmissionInput: SingleChoiceQuestionSubmissionInput
+  multipleChoiceQuestionSubmissionInput: MultipleChoiceQuestionSubmissionInput
+  sortingQuestionSubmissionInput: SortingQuestionSubmissionInput
+  textQuestionSubmissionInput: TextQuestionSubmissionInput
+}
+
+input SingleChoiceQuestionSubmissionInput {
+  answer: String!
+}
+
+input MultipleChoiceQuestionSubmissionInput {
+  answers: [String!]!
+}
+
+input SortingQuestionSubmissionInput {
+  answers: [String!]!
+}
+
+input TextQuestionSubmissionInput {
+  answer: String!
+}
+
+input QuizSubmissionInput {
+  quizID: ID!
+  submissions: [QuestionSubmissionInput!]!
+}
+
+type Query {
+  quizzes: [Quiz!]!
+  quiz(id: ID!): Quiz
+  scoreQuizSubmission(quizSubmissionInput: QuizSubmissionInput!): QuizScore
+}
+
+type Mutation {
+  createQuiz(createQuizInput: CreateQuizInput!): Quiz!
+  updateQuiz(updateQuizInput: UpdateQuizInput!): Quiz
+  removeQuiz(id: ID!): Quiz
+}
