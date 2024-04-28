@@ -136,9 +136,12 @@ class ScorerVisitor extends QuestionSubmissionVisitor<QuestionScoreDTO> {
   ): QuestionScoreDTO {
     const maximum = multipleChoiceQuestionDTO.correctAnswers.length;
     const set = new Set(multipleChoiceQuestionDTO.correctAnswers);
-    const obtained = multipleChoiceQuestionSubmissionInput.answers.reduce(
-      (acc, ans) => (set.has(ans) ? acc + 1 : acc),
+    const obtained = Math.max(
       0,
+      multipleChoiceQuestionSubmissionInput.answers.reduce(
+        (acc, ans) => (set.has(ans) ? acc + 1 : acc - 1),
+        0,
+      ),
     );
     return Object.assign(new QuestionScoreDTO(), { maximum, obtained });
   }
