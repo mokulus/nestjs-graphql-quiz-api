@@ -45,7 +45,9 @@ export class QuizzesService {
       relations: this.relations(),
     });
     if (quiz == null) return null;
-    return this.convert(await this.quizRepository.remove(quiz));
+    const removed = await this.quizRepository.remove(quiz);
+    removed.id = id;
+    return this.convert(removed);
   }
 
   async findAll(fetchQuestions: boolean): Promise<QuizDTO[]> {
