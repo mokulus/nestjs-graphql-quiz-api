@@ -13,7 +13,6 @@ import {
   QuestionSubmissionInputDTO,
 } from './dto/submission';
 import { QuestionSubmissionVisitor } from './submission.visitor';
-import * as constants from 'node:constants';
 
 describe('SubmissionVisitor', () => {
   let questionSubmissionVisitor: QuestionSubmissionVisitor<number>;

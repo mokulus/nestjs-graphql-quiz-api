@@ -6,7 +6,7 @@ import {
   Length,
   ValidateNested,
 } from 'class-validator';
-import { MIN_LENGTH, MAX_LENGTH } from '../..//constants';
+import { MIN_LENGTH, MAX_LENGTH } from '../../constants';
 import {
   MultipleChoiceQuestionSubmissionInput,
   QuestionScore,
