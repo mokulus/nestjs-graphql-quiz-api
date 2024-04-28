@@ -21,6 +21,8 @@ docker volume rm quiz-api_postgres-data
 docker compose up --build --detach
 ```
 
+Install packages and start server.
+
 ```shell
 # install packages
 npm install
