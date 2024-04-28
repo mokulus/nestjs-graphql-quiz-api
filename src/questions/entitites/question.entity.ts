@@ -61,7 +61,9 @@ export class Question {
   @Column({ name: 'prompt' })
   prompt: string;
 
-  @ManyToOne(() => Quiz, (quiz) => quiz.questions)
+  @ManyToOne(() => Quiz, (quiz) => quiz.questions, {
+    orphanedRowAction: 'delete',
+  })
   @JoinColumn({ name: 'quiz_id' })
   quiz: Quiz;
 
