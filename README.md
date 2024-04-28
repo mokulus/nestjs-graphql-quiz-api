@@ -26,6 +26,8 @@ Install packages and start server.
 ```shell
 # install packages
 npm install
+# generate types based on GraphQL schema
+npm run generate-typings
 # run tests
 npm run test
 # start dev server
@@ -131,7 +133,7 @@ query {
 ```graphql
 query {
   quiz(id: 1) {
-    id  
+    id
     name
     questions {
       prompt
