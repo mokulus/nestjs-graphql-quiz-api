@@ -185,10 +185,12 @@ describe('QuizzesService', () => {
         Object.assign(new Quiz(), { id: i }),
       );
       jest.spyOn(repository, 'find').mockReturnValue(Promise.resolve(quizzes));
-      const result = await quizzesService.findAll();
-      expect(repository.find).toHaveBeenCalled();
-      expect(result?.length).toEqual(4);
-      for (let i = 0; i < 4; ++i) expect(result[i]?.id).toEqual(i);
+      for (const fetch of [true, false]) {
+        const result = await quizzesService.findAll(fetch);
+        expect(repository.find).toHaveBeenCalled();
+        expect(result?.length).toEqual(4);
+        for (let i = 0; i < 4; ++i) expect(result[i]?.id).toEqual(i);
+      }
     });
   });
 
@@ -196,15 +198,19 @@ describe('QuizzesService', () => {
     it('should use findOne from repository', async () => {
       const quiz = Object.assign(new Quiz(), { id: 3 });
       jest.mocked(repository.findOne).mockReturnValue(Promise.resolve(quiz));
-      const result = await quizzesService.findById(3);
-      expect(result).not.toBeNull();
-      expect(result?.id).toEqual(3);
+      for (const fetch of [true, false]) {
+        const result = await quizzesService.findById(3, fetch);
+        expect(result).not.toBeNull();
+        expect(result?.id).toEqual(3);
+      }
     });
 
     it('should return null for nonexistent quiz', async () => {
       jest.mocked(repository.findOne).mockReturnValue(Promise.resolve(null));
-      const result = await quizzesService.findById(3);
-      expect(result).toBeNull();
+      for (const fetch of [true, false]) {
+        const result = await quizzesService.findById(3, fetch);
+        expect(result).toBeNull();
+      }
     });
   });
 });

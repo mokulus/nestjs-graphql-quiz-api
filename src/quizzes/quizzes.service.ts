@@ -48,9 +48,9 @@ export class QuizzesService {
     return this.convert(await this.quizRepository.remove(quiz));
   }
 
-  async findAll(): Promise<QuizDTO[]> {
+  async findAll(fetchQuestions: boolean): Promise<QuizDTO[]> {
     const quizzes = await this.quizRepository.find({
-      relations: this.relations(),
+      relations: fetchQuestions ? this.relations() : {},
       order: {
         questions: {
           id: 'ASC',
@@ -60,10 +60,10 @@ export class QuizzesService {
     return quizzes.map(this.convert.bind(this));
   }
 
-  async findById(id: number): Promise<QuizDTO | null> {
+  async findById(id: number, fetchQuizzes: boolean): Promise<QuizDTO | null> {
     const quiz = await this.quizRepository.findOne({
       where: { id },
-      relations: this.relations(),
+      relations: fetchQuizzes ? this.relations() : {},
     });
     return quiz == null ? null : this.convert(quiz);
   }

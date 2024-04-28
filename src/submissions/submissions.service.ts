@@ -28,7 +28,10 @@ export class SubmissionsService {
   async scoreQuiz(
     quizSubmission: QuizSubmissionInputDTO,
   ): Promise<QuizScoreDTO | null> {
-    const quizDTO = await this.quizzesService.findById(+quizSubmission.quizID);
+    const quizDTO = await this.quizzesService.findById(
+      +quizSubmission.quizID,
+      true,
+    );
     if (quizDTO == null) return null;
     if (quizDTO.questions.length !== quizSubmission.submissions.length)
       throw new BadRequestException(

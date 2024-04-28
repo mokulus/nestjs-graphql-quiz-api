@@ -3,6 +3,7 @@ import { QuizzesResolver } from './quizzes.resolver';
 import { QuizzesService } from './quizzes.service';
 import { CreateQuizInputDTO, UpdateQuizInputDTO } from './dto/quiz';
 import { QuestionInputValidationService } from '../questions/question.validation';
+import { GraphQLResolveInfo } from 'graphql/type';
 
 describe('QuizzesResolver', () => {
   let resolver: QuizzesResolver;
@@ -59,16 +60,26 @@ describe('QuizzesResolver', () => {
 
   describe('quizzes', () => {
     it('should call findAll method of service', async () => {
-      await resolver.quizzes();
+      jest
+        .spyOn(QuizzesResolver.prototype as any, 'getKeys')
+        .mockReturnValue([]);
+      await resolver.quizzes(makeInfo());
       expect(service.findAll).toHaveBeenCalled();
     });
   });
 
   describe('quiz', () => {
     it('should call findById method of service with correct input', async () => {
+      jest
+        .spyOn(QuizzesResolver.prototype as any, 'getKeys')
+        .mockReturnValue([]);
       const id = '1';
-      await resolver.quiz(id);
-      expect(service.findById).toHaveBeenCalledWith(+id);
+      await resolver.quiz(makeInfo(), id);
+      expect(service.findById).toHaveBeenCalledWith(+id, false);
     });
   });
 });
+
+function makeInfo(): GraphQLResolveInfo {
+  return jest.fn() as unknown as GraphQLResolveInfo;
+}
