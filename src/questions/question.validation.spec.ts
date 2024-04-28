@@ -21,13 +21,17 @@ describe('QuestionInputValidationService', () => {
   describe('validate', () => {
     it('should allow exactly one input type', () => {
       const question = new QuestionInputDTO();
-      expect(() => questionInputValidationService.validate(question)).toThrow();
+      expect(() => questionInputValidationService.validate(question)).toThrow(
+        'exactly one question input',
+      );
       question.singleChoiceQuestionInput = makeSingleChoice();
       expect(() =>
         questionInputValidationService.validate(question),
       ).not.toThrow();
       question.multipleChoiceQuestionInput = makeMultipleChoice();
-      expect(() => questionInputValidationService.validate(question)).toThrow();
+      expect(() => questionInputValidationService.validate(question)).toThrow(
+        'exactly one question input',
+      );
     });
 
     describe('single choice question validation', () => {
@@ -37,9 +41,9 @@ describe('QuestionInputValidationService', () => {
         question.singleChoiceQuestionInput = single;
         single.correctAnswer = 'A';
         single.answers = ['A', 'A', 'B', 'C'];
-        expect(() =>
-          questionInputValidationService.validate(question),
-        ).toThrow();
+        expect(() => questionInputValidationService.validate(question)).toThrow(
+          'duplicates are not allowed',
+        );
         single.answers = ['A', 'B', 'C'];
       });
       it('should throw if correct answer is missing', () => {
@@ -48,9 +52,9 @@ describe('QuestionInputValidationService', () => {
         question.singleChoiceQuestionInput = single;
         single.correctAnswer = 'D';
         single.answers = ['A', 'B', 'C'];
-        expect(() =>
-          questionInputValidationService.validate(question),
-        ).toThrow();
+        expect(() => questionInputValidationService.validate(question)).toThrow(
+          'correct answer missing',
+        );
       });
     });
 
@@ -61,9 +65,9 @@ describe('QuestionInputValidationService', () => {
         question.multipleChoiceQuestionInput = multiple;
         multiple.correctAnswers = ['A', 'B'];
         multiple.answers = ['A', 'A', 'B', 'C'];
-        expect(() =>
-          questionInputValidationService.validate(question),
-        ).toThrow();
+        expect(() => questionInputValidationService.validate(question)).toThrow(
+          'duplicates are not allowed',
+        );
       });
       it('should throw if correct answers are not unique', () => {
         const question = new QuestionInputDTO();
@@ -71,9 +75,9 @@ describe('QuestionInputValidationService', () => {
         question.multipleChoiceQuestionInput = multiple;
         multiple.correctAnswers = ['A', 'A'];
         multiple.answers = ['A', 'B', 'C'];
-        expect(() =>
-          questionInputValidationService.validate(question),
-        ).toThrow();
+        expect(() => questionInputValidationService.validate(question)).toThrow(
+          'duplicates are not allowed',
+        );
       });
       it('should throw if any correct answer is missing', () => {
         const question = new QuestionInputDTO();
@@ -81,9 +85,9 @@ describe('QuestionInputValidationService', () => {
         question.multipleChoiceQuestionInput = multiple;
         multiple.correctAnswers = ['B', 'E', 'A'];
         multiple.answers = ['A', 'B', 'C', 'D'];
-        expect(() =>
-          questionInputValidationService.validate(question),
-        ).toThrow();
+        expect(() => questionInputValidationService.validate(question)).toThrow(
+          'no E in answers',
+        );
       });
     });
 
@@ -94,9 +98,9 @@ describe('QuestionInputValidationService', () => {
         question.sortingQuestionInput = sorting;
         sorting.correctOrder = ['A', 'B', 'B'];
         sorting.answers = ['A', 'B', 'B'];
-        expect(() =>
-          questionInputValidationService.validate(question),
-        ).toThrow();
+        expect(() => questionInputValidationService.validate(question)).toThrow(
+          'duplicates are not allowed',
+        );
       });
       it('should throw if answers set is not equal to correct answers set', () => {
         const question = new QuestionInputDTO();
@@ -104,9 +108,9 @@ describe('QuestionInputValidationService', () => {
         question.sortingQuestionInput = sorting;
         sorting.correctOrder = ['A', 'B', 'D'];
         sorting.answers = ['A', 'B', 'C'];
-        expect(() =>
-          questionInputValidationService.validate(question),
-        ).toThrow();
+        expect(() => questionInputValidationService.validate(question)).toThrow(
+          'sets are not equal',
+        );
       });
     });
     describe('text question validation', () => {

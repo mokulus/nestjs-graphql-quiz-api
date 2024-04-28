@@ -51,9 +51,9 @@ describe('QuestionInputVisitor', () => {
       expect(questionInputVisitor.visit(question)).toEqual(3);
     });
     it('should throw on invalid input', () => {
-      expect(() =>
-        questionInputVisitor.visit(new QuestionInputDTO()),
-      ).toThrow();
+      expect(() => questionInputVisitor.visit(new QuestionInputDTO())).toThrow(
+        'question input',
+      );
     });
   });
 });
@@ -94,7 +94,9 @@ describe('QuestionEntityVisitor', () => {
       expect(questionEntityVisitor.visit(question)).toEqual('d');
     });
     it('should throw on invalid input', () => {
-      expect(() => questionEntityVisitor.visit(new Question())).toThrow();
+      expect(() => questionEntityVisitor.visit(new Question())).toThrow(
+        'question entity',
+      );
     });
   });
 });

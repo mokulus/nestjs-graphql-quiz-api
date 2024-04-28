@@ -66,7 +66,7 @@ describe('SubmissionVisitor', () => {
           if (a == b) continue;
           expect(() =>
             questionSubmissionVisitor.visit(makeSubmission(a), makeQuestion(b)),
-          ).toThrow();
+          ).toThrow('mismatch');
         }
       }
     });
